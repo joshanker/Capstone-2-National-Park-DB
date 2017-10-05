@@ -11,7 +11,11 @@ namespace Capstone
     {
         static void Main(string[] args)
         {
-            
+            NationalParkCLI cli = new NationalParkCLI();
+            cli.run();
+
+
+
         }
     }
 }
