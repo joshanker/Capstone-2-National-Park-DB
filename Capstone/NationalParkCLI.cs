@@ -8,7 +8,7 @@ using Capstone.Models;
 
 //MAIN MENU
 //1.  Show a list of all parks.
-//2.  View campgrounds and make a reserveration for your park
+//2.  View campgrounds and make a reservation for your park
 
 //Sub Menu for chosen park:
 
@@ -23,8 +23,9 @@ namespace Capstone
         const string DatabaseConnection = @"Data Source=.\SQLEXPRESS;Initial Catalog = NationalParkDB;User ID = te_student;Password=sqlserver1";
         const string Command_ViewAllParks = "1";
         const string Command_ViewParkDetails = "2";
-        const string Command_ReturnToPreviousScreen = "3";
-        const string Command_SearchForReservation = "2";
+        const string Command_MakeAReservation = "3";
+        const string Command_ReturnToPreviousScreen = "4";
+        const string Command_SearchForAvailableReservations = "2";
         const string Command_ViewCampgrounds = "1";
         const string Command_Quit = "q";
         List<Park> GlobalListOfParks;
@@ -103,12 +104,12 @@ namespace Capstone
             {
 
 
-                Console.WriteLine(p.Id);
-                Console.WriteLine(p.name);
-                Console.WriteLine(p.location);
-                Console.WriteLine(p.establishdate);
-                Console.WriteLine(p.area);
-                Console.WriteLine(p.visitors);
+                Console.WriteLine("Park ID: " + p.Id);
+                Console.WriteLine("Park Name: " + p.name);
+                Console.WriteLine("Location: " + p.location);
+                Console.WriteLine("Established: " + p.establishdate);
+                Console.WriteLine("Area: " + p.area);
+                Console.WriteLine("Visitors " + p.visitors);
                 Console.WriteLine(p.description);
 
 
@@ -130,7 +131,7 @@ namespace Capstone
         private void PrintMenu()
         {
             Console.WriteLine("1.  Show all parks");
-            Console.WriteLine("2.  View campgrounds and make a reserveration for your park");
+            Console.WriteLine("2.  View park submenu and make reservations.");
             Console.WriteLine("q   Quits the application.");
         }
 
@@ -153,8 +154,9 @@ namespace Capstone
         {
 
             Console.WriteLine("1.  View Campgrounds");
-            Console.WriteLine("2.  Search for reservation");
-            Console.WriteLine("3.  Return to previous screen");
+            Console.WriteLine("2.  Search for Available reservations");
+            Console.WriteLine("3.  Make a reservation");
+            Console.WriteLine("4.  Return to previous screen");
 
             string ParkMenuChoice = CLIHelper.GetString("What option would you like?");
 
@@ -164,8 +166,12 @@ namespace Capstone
                     ShowAllCampgrounds(Id);
                     break;
 
-                case Command_SearchForReservation:
-                    ViewReservations(Id);
+                case Command_SearchForAvailableReservations:
+                    SearchForAvailableReservations(Id);
+                    break;
+
+                case Command_MakeAReservation:
+                    MakeReservation(Id);
                     break;
 
                 case Command_ReturnToPreviousScreen:
@@ -173,17 +179,81 @@ namespace Capstone
 
             }
 
-            
+
         }
 
 
-        private List<Campgrounds> ShowAllCampgrounds(int ParkID)
+        private void ShowAllCampgrounds(int ParkID)
+        {
+            CampgroundDAL cDAL = new CampgroundDAL(DatabaseConnection);
+            List<Campground> clist = new List<Campground>();
+            clist = cDAL.ShowAllCampgrounds(ParkID);
+
+
+            if (clist.Count > 0)
+            {
+
+                Console.WriteLine("CG ID ".PadRight(5) + "Name".PadRight(35) + "Open From".PadRight(14) + "Open To".PadRight(10) + "Daily Fee".PadRight(10));
+                foreach (Campground c in clist)
+                {
+
+                    Console.Write("  " + c.campground_id.ToString().PadRight(3) + " " + c.name.ToString().PadRight(30) + "        " + c.open_from_mm.ToString().PadRight(10) + " " + c.open_to_mm.ToString().PadRight(10) + " " + c.daily_fee);
+                    Console.WriteLine();
+
+                }
+
+            }
+
+            else
+            {
+                Console.WriteLine("NO RESULTS IN CAMPGROUND LIST");
+            }
+
+
+        }
+
+        private void SearchForAvailableReservations(int ParkID)
         {
 
+            string CampgroundChoice = CLIHelper.GetString("Which campground would you like?");
+            string ArrivalDate = CLIHelper.GetString("What is the arrival date?");
+            string DepartureDate = CLIHelper.GetString("What is the departure date?");
+
+
+        //    List<Reservation> rlist = ViewAvailReservations(ParkID, CampgroundChoice, ArrivalDate, DepartureDate);
+
         }
 
+        private void MakeReservation(int Id)
+        {
+           
+            string CampgroundChoice = CLIHelper.GetString("Which campground would you like?");
+            string CampSiteChoice = CLIHelper.GetString("Which campsite would you like?");
+            string name = CLIHelper.GetString("What is your name?");
+            string ArrivalDate = CLIHelper.GetString("What is the arrival date?");
+            string DepartureDate = CLIHelper.GetString("What is the departure date?");
 
+            ReservationDAL rDal = new ReservationDAL(DatabaseConnection);
+            int confirmationNumber = rDal.AddReservation(Id, CampgroundChoice,  CampSiteChoice, name, ArrivalDate, DepartureDate);
+            if(confirmationNumber == 0)
+            {
+                Console.WriteLine("There was an error during the reservation");
 
+            }
+            else
+            {
+                Console.WriteLine($"Your confirmation number is {confirmationNumber}");
+            }
+
+        }
 
     }
 }
+
+
+
+
+
+
+
+

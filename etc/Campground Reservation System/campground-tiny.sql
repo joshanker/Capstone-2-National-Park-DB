@@ -1,7 +1,41 @@
-DROP TABLE reservation;
-DROP TABLE site;
-DROP TABLE campground;
-DROP TABLE park;
+--DROP TABLE reservation;
+--DROP TABLE site;
+--DROP TABLE campground;
+--DROP TABLE park;
+
+select * from park;
+select * from campground
+select * from reservation
+
+
+select max(reservation_id) as reservation_ID from reservation
+
+select * from reservation
+
+
+
+
+insert into reservation values (1, 'Josh Haci', '2017-10-1', '2017-10-5','2017-10-5')
+
+SELECT * FROM reservation
+JOIN site ON site.site_id = reservation.site_id
+JOIN campground ON campground.campground_id = site.campground_id
+JOIN park ON park.park_id = campground.park_id
+WHERE park.park_id = 1 AND campground.campground_id = 1;
+
+SELECT * FROM site
+JOIN reservation ON reservation.site_id = site.site_id
+JOIN campground ON campground.campground_id = site.campground_id
+JOIN park ON park.park_id = campground.park_id
+WHERE park.park_id = 1 AND campground.campground_id = 1 
+AND
+
+
+select * from campground
+
+
+select * from campground where park_id = 2
+
 
 CREATE TABLE park (
   park_id integer identity NOT NULL,

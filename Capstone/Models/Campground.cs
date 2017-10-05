@@ -13,7 +13,7 @@ namespace Capstone.Models
 
         public string name { get; set; }
 
-        public string park_id { get; set; }
+        public int park_id { get; set; }
 
         public int open_from_mm { get; set; }
 
