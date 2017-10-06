@@ -10,7 +10,7 @@ namespace Capstone.DAL
 {
     public class CampgroundDAL
     {
-        int campgroundId;
+        //int campgroundId;
         private string connectionString;
         private const string SQL_ReturnCampgroundsForAPark = "select * from campground where park_id = @parkID";
         private const string SQL_ReturnCampgroundCost = "select daily_fee from campground where campground_id = @campgroundchoice";
@@ -58,7 +58,7 @@ namespace Capstone.DAL
 
             }
 
-            catch (SqlException ex)
+            catch (SqlException)
             {
                 throw;
             }
@@ -89,7 +89,7 @@ namespace Capstone.DAL
 
             }
 
-            catch (SqlException ex)
+            catch (SqlException)
             {
                 throw;
             }

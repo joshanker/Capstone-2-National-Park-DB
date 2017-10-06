@@ -14,7 +14,19 @@ namespace Capstone.DAL
     {
 
         private string connectionString;
-        private const string SQL_ReturnAvailSitesForAGivenTime = "SELECT * FROM site WHERE site.campground_id = @campground AND site.site_id  NOT IN (SELECT reservation.site_id FROM reservation WHERE ((@arriveDate<reservation.from_date AND @departureDate> reservation.from_date AND @departureDate<reservation.to_date ) OR (@arriveDate > reservation.from_date AND @departureDate<reservation.to_date) OR (@arriveDate > reservation.from_date AND @departureDate > reservation.to_date) OR (@arriveDate<reservation.from_date AND @departureDate> reservation.to_date) or (@arriveDate = reservation.from_date AND @departureDate = reservation.to_date)))";
+        private const string SQL_ReturnAvailSitesForAGivenTime = 
+            "SELECT TOP 5  * FROM site " +
+            "WHERE site.campground_id = @campground AND site.site_id NOT IN (SELECT reservation.site_id FROM reservation WHERE ((@departureDate > reservation.from_date AND @departureDate <= reservation.to_date) OR (@arriveDate >= reservation.from_date AND @arriveDate < reservation.to_date) OR (@arriveDate >= reservation.from_date AND @arriveDate < reservation.to_date)))";
+
+        
+
+        //private string connectionString;
+        //private const string SQL_ReturnAvailSitesForAGivenTime =
+        //    "SELECT TOP 5  * FROM site " +
+        //    "WHERE site.campground_id = @campground AND site.site_id NOT IN (SELECT reservation.site_id FROM reservation WHERE ((@arriveDate<reservation.from_date AND @departureDate> reservation.from_date AND @departureDate<reservation.to_date ) OR (@arriveDate > reservation.from_date AND @departureDate<=reservation.to_date) OR (@arriveDate > reservation.from_date AND @departureDate > reservation.to_date) OR (@arriveDate<reservation.from_date AND @departureDate> reservation.to_date) or (@arriveDate = reservation.from_date AND @departureDate = reservation.to_date)))";
+
+
+
 
 
 
@@ -32,7 +44,6 @@ namespace Capstone.DAL
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-
 
                     SqlCommand cmd = new SqlCommand(SQL_ReturnAvailSitesForAGivenTime, connection);
                     cmd.Parameters.AddWithValue("@arriveDate", DateTime.Parse(ArrivalDate));
@@ -70,7 +81,7 @@ namespace Capstone.DAL
 
 
 
-            catch (SqlException ex)
+            catch (SqlException)
             {
                 throw;
             }

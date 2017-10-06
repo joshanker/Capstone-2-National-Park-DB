@@ -225,55 +225,63 @@ namespace Capstone
 
             List<Site> slist = sdal.ViewAvailReservations(CampgroundChoice, ArrivalDate, DepartureDate);
 
-            CampgroundDAL cgdal = new CampgroundDAL(DatabaseConnection);
 
-            double camgroundCost = cgdal.GetCampgroundCost(CampgroundChoice);
-
-            Console.WriteLine("Available sites & details for your dates:");
-            Console.WriteLine("Site ID" + " " + "Max Occupancy" + " " + "Accessible?" + " " + "Max RV Length" + " " + "Utilities" + " " + "Cost");
-
-
-
-
-            foreach (Site item in slist)
-            {
-                Console.Write("   " + item.site_id.ToString().PadRight(9) + " " + item.max_occupancy.ToString().PadRight(10) + " " + TrueFalse(item.accessible).ToString().PadRight(14) + " " + item.max_rv_length.ToString().PadRight(10) + " " + TrueFalse(item.utilities).ToString().PadRight(8) + " " + camgroundCost);
-                Console.WriteLine();
-            }
 
             
-            string siteChoiceToReserve = CLIHelper.GetString("Which site should be reserved (enter 0 to cancel)");
-
-            if(siteChoiceToReserve == "0")
+            if (slist.Count > 0)
             {
-                return;
-            }
 
+                CampgroundDAL cgdal = new CampgroundDAL(DatabaseConnection);
 
-            bool SiteIsInTheList = false;
+                double camgroundCost = cgdal.GetCampgroundCost(CampgroundChoice);
 
-       
+                Console.WriteLine("Available sites & details for your dates:");
+                Console.WriteLine("Site ID" + " " + "Max Occupancy" + " " + "Accessible?" + " " + "Max RV Length" + " " + "Utilities" + " " + "Cost");
 
-            foreach  (Site item in slist)
-            {
-                if(item.site_id.ToString() == siteChoiceToReserve)
+                foreach (Site item in slist)
                 {
-                    SiteIsInTheList = true;
+                    Console.Write("   " + item.site_id.ToString().PadRight(9) + " " + item.max_occupancy.ToString().PadRight(10) + " " + TrueFalse(item.accessible).ToString().PadRight(14) + " " + item.max_rv_length.ToString().PadRight(10) + " " + TrueFalse(item.utilities).ToString().PadRight(8) + " " + camgroundCost);
+                    Console.WriteLine();
                 }
-            }
 
-            if (!SiteIsInTheList)
-            
+
+                string siteChoiceToReserve = CLIHelper.GetString("Which site should be reserved (enter 0 to cancel)");
+
+                if (siteChoiceToReserve == "0")
+                {
+                    return;
+                }
+
+
+                bool SiteIsInTheList = false;
+
+
+
+                foreach (Site item in slist)
+                {
+                    if (item.site_id.ToString() == siteChoiceToReserve)
+                    {
+                        SiteIsInTheList = true;
+                    }
+                }
+
+                if (!SiteIsInTheList)
+
+                {
+                    Console.WriteLine("Sorry, that Site ID isn't in our list!  Please start over.");
+                    return;
+                }
+
+
+
+                string name = CLIHelper.GetString("What name should the reservation be made under?");
+                MakeReservation(siteChoiceToReserve, name, ArrivalDate, DepartureDate);
+            }
+            else
             {
-                Console.WriteLine("Sorry, that Site ID isn't in our list!  Please start over.");
+                Console.WriteLine("Sorry, no campsitee are available. Please try again with different dates.");
                 return;
             }
-
-
-
-            string name = CLIHelper.GetString("What name should the reservation be made under?");
-            MakeReservation(siteChoiceToReserve,  name, ArrivalDate, DepartureDate);
-
         }
 
         private void MakeReservation( string CampSiteChoice, string name, string ArrivalDate, string DepartureDate)
