@@ -23,8 +23,8 @@ namespace Capstone
         const string DatabaseConnection = @"Data Source=.\SQLEXPRESS;Initial Catalog = NationalParkDB;User ID = te_student;Password=sqlserver1";
         const string Command_ViewAllParks = "1";
         const string Command_ViewParkDetails = "2";
-        const string Command_MakeAReservation = "3";
-        const string Command_ReturnToPreviousScreen = "4";
+        //const string Command_MakeAReservation = "3";
+        const string Command_ReturnToPreviousScreen = "3";
         const string Command_SearchForAvailableReservations = "2";
         const string Command_ViewCampgrounds = "1";
         const string Command_Quit = "q";
@@ -154,9 +154,9 @@ namespace Capstone
         {
 
             Console.WriteLine("1.  View Campgrounds");
-            Console.WriteLine("2.  Search for Available reservations");
-            Console.WriteLine("3.  Make a reservation");
-            Console.WriteLine("4.  Return to previous screen");
+            Console.WriteLine("2.  Search for and make a reservation");
+            //Console.WriteLine("3.  Make a reservation");
+            Console.WriteLine("3.  Return to previous screen");
 
             string ParkMenuChoice = CLIHelper.GetString("What option would you like?");
 
@@ -170,9 +170,9 @@ namespace Capstone
                     SearchForAvailableReservations(Id);
                     break;
 
-                case Command_MakeAReservation:
-                    MakeReservation(Id);
-                    break;
+                //case Command_MakeAReservation:
+                //    MakeReservation(Id);
+                //    break;
 
                 case Command_ReturnToPreviousScreen:
                     break;
@@ -216,8 +216,8 @@ namespace Capstone
         {
 
             string CampgroundChoice = CLIHelper.GetString("Which campground would you like?");
-            string ArrivalDate = CLIHelper.GetString("What is the arrival date?");
-            string DepartureDate = CLIHelper.GetString("What is the departure date?");
+            string ArrivalDate = CLIHelper.GetDate("What is the arrival date?");
+            string DepartureDate = CLIHelper.GetDate("What is the departure date?");
 
             // This needs to return a list of available sites (for each campground) for those dates.
 
@@ -237,7 +237,7 @@ namespace Capstone
 
             foreach (Site item in slist)
             {
-                Console.Write("   " + item.site_id.ToString().PadRight(9) + " " + item.max_occupancy.ToString().PadRight(10) + " " + item.accessible.ToString().PadRight(14) + " " + item.max_rv_length.ToString().PadRight(10) + " " + item.utilities.ToString().PadRight(8) + " " + camgroundCost);
+                Console.Write("   " + item.site_id.ToString().PadRight(9) + " " + item.max_occupancy.ToString().PadRight(10) + " " + TrueFalse(item.accessible).ToString().PadRight(14) + " " + item.max_rv_length.ToString().PadRight(10) + " " + TrueFalse(item.utilities).ToString().PadRight(8) + " " + camgroundCost);
                 Console.WriteLine();
             }
 
@@ -267,19 +267,19 @@ namespace Capstone
 
         }
 
-        //private String TrueFalse(bool result)
-        //{
+        private String TrueFalse(bool result)
+        {
 
-        //    if(result == "True")
-        //    {
-        //        return "Yes";
-        //    }
-        //    else
-        //    {
-        //        return "No";
-        //    }
+            if (result)
+            {
+                return "Yes";
+            }
+            else
+            {
+                return "No";
+            }
 
-        //}
+        }
 
 
 

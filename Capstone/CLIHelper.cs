@@ -94,8 +94,32 @@ namespace Capstone
                 numberOfAttempts++;
             }
             while (String.IsNullOrEmpty(userInput));
+            
+            return userInput;
+        }
+
+        public static string GetDate(string message)
+        {
+            string userInput = String.Empty;
+            DateTime datetimeValue;
+            int numberOfAttempts = 0;
+
+            do
+            {
+                if (numberOfAttempts > 0)
+                {
+                    Console.WriteLine("Invalid input format. Please try again");
+                }
+
+                Console.Write(message + " ");
+                userInput = Console.ReadLine();
+                numberOfAttempts++;
+            }
+            while (!DateTime.TryParse(userInput, out datetimeValue));
 
             return userInput;
         }
+
+
     }
 }
