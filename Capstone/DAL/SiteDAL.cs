@@ -14,7 +14,7 @@ namespace Capstone.DAL
     {
 
         private string connectionString;
-        private const string SQL_ReturnAvailSitesForAGivenTime = "SELECT * FROM site WHERE site.campground_id = @campground AND site.site_id  NOT IN (SELECT reservation.site_id FROM reservation WHERE ((@arriveDate<reservation.from_date AND @departureDate> reservation.from_date AND @departureDate<reservation.to_date ) OR (@arriveDate > reservation.from_date AND @departureDate<reservation.to_date) OR (@arriveDate > reservation.from_date AND @departureDate > reservation.to_date) OR (@arriveDate<reservation.from_date AND @departureDate> reservation.to_date)))";
+        private const string SQL_ReturnAvailSitesForAGivenTime = "SELECT * FROM site WHERE site.campground_id = @campground AND site.site_id  NOT IN (SELECT reservation.site_id FROM reservation WHERE ((@arriveDate<reservation.from_date AND @departureDate> reservation.from_date AND @departureDate<reservation.to_date ) OR (@arriveDate > reservation.from_date AND @departureDate<reservation.to_date) OR (@arriveDate > reservation.from_date AND @departureDate > reservation.to_date) OR (@arriveDate<reservation.from_date AND @departureDate> reservation.to_date) or (@arriveDate = reservation.from_date AND @departureDate = reservation.to_date)))";
 
 
 

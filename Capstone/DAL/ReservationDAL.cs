@@ -28,7 +28,7 @@ namespace Capstone.DAL
 
         //}
 
-        public int AddReservation(int Id, string CampGroundChoice,  string CampSiteChoice, string name,  string ArrivalDate, string DepartureDate)
+        public int AddReservation( string CampSiteChoice, string name,  string ArrivalDate, string DepartureDate)
         {
             int reservationId = 0;
             try
@@ -37,9 +37,9 @@ namespace Capstone.DAL
                 {
                     connection.Open();
                     SqlCommand cmd = new SqlCommand(SQL_AddReservation, connection);
-                    cmd.Parameters.AddWithValue("@siteId", Id);
+                    //cmd.Parameters.AddWithValue("@siteId", Id);
                     cmd.Parameters.AddWithValue("@name", name );
-                    cmd.Parameters.AddWithValue("@CampSiteChoice", CampSiteChoice);
+                    cmd.Parameters.AddWithValue("@siteId", CampSiteChoice);
                     cmd.Parameters.AddWithValue("@ArrivalDate", ArrivalDate);
                     cmd.Parameters.AddWithValue("@departureDate", DepartureDate);
                     cmd.Parameters.AddWithValue("@currentDateTime", DateTime.Now);
