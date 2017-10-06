@@ -47,8 +47,10 @@
     <Compile Include="CLIHelper.cs" />
     <Compile Include="DAL\NationalParkDAL.cs" />
     <Compile Include="DAL\ReservationDAL.cs" />
+    <Compile Include="DAL\SiteDAL.cs" />
     <Compile Include="Models\Campground.cs" />
     <Compile Include="Models\Reservation.cs" />
+    <Compile Include="Models\Site.cs" />
     <Compile Include="NationalParkCLI.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

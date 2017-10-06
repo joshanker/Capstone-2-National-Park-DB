@@ -13,6 +13,8 @@ namespace Capstone.DAL
         int campgroundId;
         private string connectionString;
         private const string SQL_ReturnCampgroundsForAPark = "select * from campground where park_id = @parkID";
+        private const string SQL_ReturnCampgroundCost = "select daily_fee from campground where campground_id = @campgroundchoice";
+        private double cGroundCost;
 
 
         public CampgroundDAL(string connection)
@@ -65,7 +67,38 @@ namespace Capstone.DAL
 
         }
 
+        public double GetCampgroundCost(string cgchoice)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
 
+                    SqlCommand cmd = new SqlCommand(SQL_ReturnCampgroundCost, connection);
+                    cmd.Parameters.AddWithValue("@campgroundchoice", int.Parse(cgchoice));
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        cGroundCost = Convert.ToDouble(reader["daily_fee"]);
+                       
+
+                    }
+
+                }
+
+            }
+
+            catch (SqlException ex)
+            {
+                throw;
+            }
+
+            return cGroundCost;
+
+        }
+
+       
 
     }
 }

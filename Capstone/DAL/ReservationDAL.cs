@@ -12,6 +12,10 @@ namespace Capstone.DAL
     {
         //SQL_ReturnAllReservations = "select * from XX where ParkID = XX AND campgroundChoice = XX and Ar";
         private const string SQL_AddReservation = "insert into reservation values (@siteId, @name, @arrivalDate, @departureDate, @currentDateTime)";
+
+
+
+
         private string connectionString;
         
         public ReservationDAL(string connection)
@@ -59,6 +63,9 @@ namespace Capstone.DAL
             }
             return reservationId;
         }
+
+
+            
 
 
     }

@@ -6,13 +6,47 @@
 select * from park;
 select * from campground
 select * from reservation
-
+select * from site
 
 select max(reservation_id) as reservation_ID from reservation
 
 select * from reservation
 
 
+Select * from reservation join site On site.site_id = reservation.site_id
+join campground on campground.campground_id = site.campground_id
+where site.site_id = 1
+
+-- arrive date is 20170901
+-- depart date is 20170929
+
+DECLARE @arriveDate AS DateTime;
+SET @arriveDate = '20170901';
+
+
+DECLARE @departureDate AS DateTime;
+SET @departureDate = '20170929';
+
+SELECT * 
+FROM site
+WHERE site.site_id  NOT IN (SELECT reservation.site_id FROM reservation 
+WHERE ( (reservation.from_date <= @arriveDate AND reservation.from_date >= @departureDate AND reservation.to_date <= @departureDate ) 
+                                                                            OR (reservation.from_date >= @arriveDate AND reservation.to_date <= @departureDate)
+                                                                            OR (reservation.from_date >= @arriveDate AND reservation.to_date >= @departureDate)
+                                                                            OR (reservation.from_date <= @arriveDate AND reservation.to_date >= @departureDate)
+                                                                            )
+                          );
+               ARRIVE: 2017-09-01  DEPART: 2017-09-29
+SELECT * 
+FROM site
+WHERE site.site_id  NOT IN (SELECT reservation.site_id FROM reservation 
+WHERE ( 
+   (2017-09-29 >= 2017-09-01 AND 2017-09-29 <= 2017-09-29 AND 2017-10-02 >= 2017-09-29 )  TRUE
+OR (2017-09-29 <= 2017-09-01 AND 2017-10-02 >= 2017-09-29)									FALSE
+OR (2017-09-29 <= 2017-09-01 AND 2017-10-02 <= 2017-09-29)									FALSE	
+OR (2017-09-29 >= 2017-09-01 AND 2017-10-02 <= 2017-09-29)									FALSE
+                                                                            )
+                          );
 
 
 insert into reservation values (1, 'Josh Haci', '2017-10-1', '2017-10-5','2017-10-5')

@@ -219,14 +219,34 @@ namespace Capstone
             string ArrivalDate = CLIHelper.GetString("What is the arrival date?");
             string DepartureDate = CLIHelper.GetString("What is the departure date?");
 
+            // This needs to return a list of available sites (for each campground) for those dates.
 
-        //    List<Reservation> rlist = ViewAvailReservations(ParkID, CampgroundChoice, ArrivalDate, DepartureDate);
+            SiteDAL sdal = new SiteDAL(DatabaseConnection);
+
+            List<Site> slist = sdal.ViewAvailReservations(CampgroundChoice, ArrivalDate, DepartureDate);
+
+            CampgroundDAL cgdal = new CampgroundDAL(DatabaseConnection);
+
+            double camgroundCost = cgdal.GetCampgroundCost(CampgroundChoice);
+
+            Console.WriteLine("Available sites & details for your dates:");
+            Console.WriteLine("Site ID" + " " + "Max Occupancy" + " " + "Accessible?" + " " + "Max RV Length" + " " + "Utilities" + " " + "Cost");
+
+
+
+
+            foreach (Site item in slist)
+            {
+                Console.Write("   " + item.site_id.ToString().PadRight(9) + " " + item.max_occupancy.ToString().PadRight(10) + " " + item.accessible.ToString().PadRight(14) + " " + item.max_rv_length.ToString().PadRight(10) + " " + item.utilities.ToString().PadRight(8) + " " + camgroundCost);
+                Console.WriteLine();
+            }
+
 
         }
 
         private void MakeReservation(int Id)
         {
-           
+
             string CampgroundChoice = CLIHelper.GetString("Which campground would you like?");
             string CampSiteChoice = CLIHelper.GetString("Which campsite would you like?");
             string name = CLIHelper.GetString("What is your name?");
@@ -234,8 +254,8 @@ namespace Capstone
             string DepartureDate = CLIHelper.GetString("What is the departure date?");
 
             ReservationDAL rDal = new ReservationDAL(DatabaseConnection);
-            int confirmationNumber = rDal.AddReservation(Id, CampgroundChoice,  CampSiteChoice, name, ArrivalDate, DepartureDate);
-            if(confirmationNumber == 0)
+            int confirmationNumber = rDal.AddReservation(Id, CampgroundChoice, CampSiteChoice, name, ArrivalDate, DepartureDate);
+            if (confirmationNumber == 0)
             {
                 Console.WriteLine("There was an error during the reservation");
 
@@ -246,6 +266,22 @@ namespace Capstone
             }
 
         }
+
+        //private String TrueFalse(bool result)
+        //{
+
+        //    if(result == "True")
+        //    {
+        //        return "Yes";
+        //    }
+        //    else
+        //    {
+        //        return "No";
+        //    }
+
+        //}
+
+
 
     }
 }
