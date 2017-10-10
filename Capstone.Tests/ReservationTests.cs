@@ -72,7 +72,7 @@ namespace Capstone.Tests
             t.Dispose();
         }
 
-        [TestMethod]
+        [TestMethod]        
         public void Test_NoReservations_ReturnsOpenSiteId()
         {
             //Arrange

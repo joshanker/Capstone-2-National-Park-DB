@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Capstone.DAL;
 using Capstone.Models;
+using System.Configuration;
 
 //MAIN MENU
 //1.  Show a list of all parks.
@@ -20,7 +21,7 @@ namespace Capstone
 {
     public class NationalParkCLI
     {
-        const string DatabaseConnection = @"Data Source=.\SQLEXPRESS;Initial Catalog = NationalParkDB;User ID = te_student;Password=sqlserver1";
+        readonly string DatabaseConnection = ConfigurationManager.ConnectionStrings["CapstoneDatabase"].ConnectionString;
         const string Command_ViewAllParks = "1";
         const string Command_ViewParkDetails = "2";
         //const string Command_MakeAReservation = "3";
@@ -28,7 +29,6 @@ namespace Capstone
         const string Command_SearchForAvailableReservations = "2";
         const string Command_ViewCampgrounds = "1";
         const string Command_Quit = "q";
-        List<Park> GlobalListOfParks;
 
         public void run()
         {
@@ -51,7 +51,7 @@ namespace Capstone
                         break;
 
                     case Command_Quit:
-                        quit();
+                        Quit();
                         break;
 
                 }
@@ -67,22 +67,17 @@ namespace Capstone
             Console.WriteLine();
             NationalParkDAL npDAL = new NationalParkDAL(DatabaseConnection);
             List<Park> parkList = npDAL.ShowAllParks();
-            GlobalListOfParks = parkList;
 
 
             if (parkList.Count > 0)
             {
                 foreach (Park p in parkList)
                 {
-
                     Console.Write(p.Id);
                     Console.Write(".  ");
                     Console.WriteLine(p.name);
-
                 }
-
             }
-
             else
             {
                 Console.WriteLine("NO RESULTS IN PARKLIST");
@@ -102,8 +97,6 @@ namespace Capstone
 
             if (p != null)
             {
-
-
                 Console.WriteLine("Park ID: " + p.Id);
                 Console.WriteLine("Park Name: " + p.name);
                 Console.WriteLine("Location: " + p.location);
@@ -112,16 +105,12 @@ namespace Capstone
                 Console.WriteLine("Visitors " + p.visitors);
                 Console.WriteLine(p.description);
 
-
                 ParkSubmenu(p.Id);
             }
-
             else
             {
                 Console.WriteLine("NO RESULTS IN PARKLIST");
             }
-
-
         }
 
 
@@ -145,12 +134,12 @@ namespace Capstone
             Console.WriteLine("--------------------------------------------------------------");
         }
 
-        private void quit()
+        private void Quit()
         {
             Environment.Exit(1);
         }
 
-        private void ParkSubmenu(int Id)
+        private void ParkSubmenu(int id)
         {
 
             Console.WriteLine("1.  View Campgrounds");
@@ -158,16 +147,16 @@ namespace Capstone
             //Console.WriteLine("3.  Make a reservation");
             Console.WriteLine("3.  Return to previous screen");
 
-            string ParkMenuChoice = CLIHelper.GetString("What option would you like?");
+            string parkMenuChoice = CLIHelper.GetString("What option would you like?");
 
-            switch (ParkMenuChoice.ToLower())
+            switch (parkMenuChoice.ToLower())
             {
                 case Command_ViewCampgrounds:
-                    ShowAllCampgrounds(Id);
+                    ShowAllCampgrounds(id);
                     break;
 
                 case Command_SearchForAvailableReservations:
-                    SearchForAvailableReservations(Id);
+                    SearchForAvailableReservations(id);
                     break;
 
                 //case Command_MakeAReservation:
@@ -183,11 +172,11 @@ namespace Capstone
         }
 
 
-        private void ShowAllCampgrounds(int ParkID)
+        private void ShowAllCampgrounds(int parkId)
         {
             CampgroundDAL cDAL = new CampgroundDAL(DatabaseConnection);
             List<Campground> clist = new List<Campground>();
-            clist = cDAL.ShowAllCampgrounds(ParkID);
+            clist = cDAL.ShowAllCampgrounds(parkId);
 
 
             if (clist.Count > 0)
@@ -197,7 +186,7 @@ namespace Capstone
                 foreach (Campground c in clist)
                 {
 
-                    Console.Write("  " + c.campground_id.ToString().PadRight(3) + " " + c.name.ToString().PadRight(30) + "        " + c.open_from_mm.ToString().PadRight(10) + " " + c.open_to_mm.ToString().PadRight(10) + " " + c.daily_fee);
+                    Console.Write("  " + c.CampgroundId.ToString().PadRight(3) + " " + c.Name.ToString().PadRight(30) + "        " + c.OpenFromMM.ToString().PadRight(10) + " " + c.OpenToMM.ToString().PadRight(10) + " " + c.DailyFee);
                     Console.WriteLine();
 
                 }
@@ -279,7 +268,7 @@ namespace Capstone
             }
             else
             {
-                Console.WriteLine("Sorry, no campsitee are available. Please try again with different dates.");
+                Console.WriteLine("Sorry, no campsites are available. Please try again with different dates.");
                 return;
             }
         }

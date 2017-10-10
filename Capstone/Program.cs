@@ -13,9 +13,6 @@ namespace Capstone
         {
             NationalParkCLI cli = new NationalParkCLI();
             cli.run();
-
-
-
         }
     }
 }

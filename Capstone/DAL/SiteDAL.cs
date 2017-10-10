@@ -26,10 +26,6 @@ namespace Capstone.DAL
         //    "WHERE site.campground_id = @campground AND site.site_id NOT IN (SELECT reservation.site_id FROM reservation WHERE ((@arriveDate<reservation.from_date AND @departureDate> reservation.from_date AND @departureDate<reservation.to_date ) OR (@arriveDate > reservation.from_date AND @departureDate<=reservation.to_date) OR (@arriveDate > reservation.from_date AND @departureDate > reservation.to_date) OR (@arriveDate<reservation.from_date AND @departureDate> reservation.to_date) or (@arriveDate = reservation.from_date AND @departureDate = reservation.to_date)))";
 
 
-
-
-
-
         public SiteDAL(string connection)
         {
             connectionString = connection;
@@ -64,23 +60,10 @@ namespace Capstone.DAL
                         s.max_rv_length = Convert.ToInt32(reader["max_rv_length"]);
                         s.utilities = Convert.ToBoolean(reader["utilities"]);
                         
-
-                        output.Add(s);
-
-                        
+                        output.Add(s);                        
                     }
-
-                    
-
-
                 }
-
-
             }
-
-
-
-
             catch (SqlException)
             {
                 throw;
@@ -88,7 +71,5 @@ namespace Capstone.DAL
 
             return output;
         }
-
-
     }
 }

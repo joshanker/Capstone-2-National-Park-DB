@@ -9,17 +9,17 @@ namespace Capstone.Models
     public class Campground
     {
 
-        public int campground_id { get; set; }
+        public int CampgroundId { get; set; }
 
-        public string name { get; set; }
+        public string Name { get; set; }
 
-        public int park_id { get; set; }
+        public int ParkId { get; set; }
 
-        public int open_from_mm { get; set; }
+        public int OpenFromMM { get; set; }
 
-        public int open_to_mm { get; set; }
+        public int OpenToMM { get; set; }
 
-        public double daily_fee { get; set; }
+        public double DailyFee { get; set; }
 
         
 

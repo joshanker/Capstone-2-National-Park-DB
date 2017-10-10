@@ -14,7 +14,6 @@ namespace Capstone.DAL
         private string connectionString;
         private const string SQL_ReturnCampgroundsForAPark = "select * from campground where park_id = @parkID";
         private const string SQL_ReturnCampgroundCost = "select daily_fee from campground where campground_id = @campgroundchoice";
-        private double cGroundCost;
 
 
         public CampgroundDAL(string connection)
@@ -23,7 +22,7 @@ namespace Capstone.DAL
         }
 
 
-	    public List<Campground> ShowAllCampgrounds(int Id)
+        public List<Campground> ShowAllCampgrounds(int Id)
         {
 
             List<Campground> cglist = new List<Campground>();
@@ -40,15 +39,15 @@ namespace Capstone.DAL
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                        
+
                         Campground c = new Campground();
 
-                        c.campground_id = Convert.ToInt32(reader["campground_id"]);
-						c.park_id = Convert.ToInt32(reader["park_id"]);
-                        c.name = Convert.ToString(reader["name"]);
-						c.open_from_mm = Convert.ToInt32(reader["open_from_mm"]);
-                        c.open_to_mm = Convert.ToInt32(reader["open_to_mm"]);
-						c.daily_fee = Convert.ToDouble(reader["daily_fee"]);
+                        c.CampgroundId = Convert.ToInt32(reader["campground_id"]);
+                        c.ParkId = Convert.ToInt32(reader["park_id"]);
+                        c.Name = Convert.ToString(reader["name"]);
+                        c.OpenFromMM = Convert.ToInt32(reader["open_from_mm"]);
+                        c.OpenToMM = Convert.ToInt32(reader["open_to_mm"]);
+                        c.DailyFee = Convert.ToDouble(reader["daily_fee"]);
 
                         cglist.Add(c);
 
@@ -69,6 +68,8 @@ namespace Capstone.DAL
 
         public double GetCampgroundCost(string cgchoice)
         {
+            double cGroundCost = 0.0;
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
@@ -78,27 +79,21 @@ namespace Capstone.DAL
                     SqlCommand cmd = new SqlCommand(SQL_ReturnCampgroundCost, connection);
                     cmd.Parameters.AddWithValue("@campgroundchoice", int.Parse(cgchoice));
                     SqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
+                    if (reader.Read())
                     {
                         cGroundCost = Convert.ToDouble(reader["daily_fee"]);
-                       
-
                     }
-
                 }
-
             }
-
             catch (SqlException)
             {
                 throw;
             }
 
             return cGroundCost;
-
         }
 
-       
+
 
     }
 }

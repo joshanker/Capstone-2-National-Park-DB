@@ -37,24 +37,11 @@ namespace Capstone.DAL
                     SqlDataReader reader = cmd.ExecuteReader();
                     while(reader.Read())
                     {
-                        Park p = new Park();
-
-                        p.Id = Convert.ToInt32(reader["park_id"]);
-                        p.name = Convert.ToString(reader["name"]);
-                        p.location = Convert.ToString(reader["location"]);
-                        p.establishdate = Convert.ToDateTime(reader["establish_date"]);
-                        p.area = Convert.ToInt32(reader["area"]);
-                        p.visitors = Convert.ToInt32(reader["visitors"]);
-                        p.description = Convert.ToString(reader["description"]);
-
+                        Park p = GetParkFromReader(reader);
                         parklist.Add(p);
-                        
                     }
-                    
                 }
-
             }
-
             catch (SqlException)
             {
                 throw;
@@ -64,9 +51,23 @@ namespace Capstone.DAL
 
         }
 
+        private static Park GetParkFromReader(SqlDataReader reader)
+        {
+            Park p = new Park();
+
+            p.Id = Convert.ToInt32(reader["park_id"]);
+            p.name = Convert.ToString(reader["name"]);
+            p.location = Convert.ToString(reader["location"]);
+            p.establishdate = Convert.ToDateTime(reader["establish_date"]);
+            p.area = Convert.ToInt32(reader["area"]);
+            p.visitors = Convert.ToInt32(reader["visitors"]);
+            p.description = Convert.ToString(reader["description"]);
+            return p;
+        }
+
         public Park GetParkInfo(int parkToReturn)
         {
-            Park loadedUpPark = new Park();
+            Park loadedUpPark = null;
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
@@ -78,31 +79,16 @@ namespace Capstone.DAL
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                        Park p = new Park();
-
-                        p.Id = Convert.ToInt32(reader["park_id"]);
-                        p.name = Convert.ToString(reader["name"]);
-                        p.location = Convert.ToString(reader["location"]);
-                        p.establishdate = Convert.ToDateTime(reader["establish_date"]);
-                        p.area = Convert.ToInt32(reader["area"]);
-                        p.visitors = Convert.ToInt32(reader["visitors"]);
-                        p.description = Convert.ToString(reader["description"]);
-
-                        loadedUpPark = p;
-
+                        loadedUpPark = GetParkFromReader(reader);
                     }
-
                 }
-
             }
-
             catch (SqlException)
             {
                 throw;
             }
 
-            return loadedUpPark;
-            
+            return loadedUpPark;            
         }
 
 
