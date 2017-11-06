@@ -3,72 +3,45 @@
 --DROP TABLE campground;
 --DROP TABLE park;
 
-select * from park;
+select * from reservation where site_id = 1
+select * from site
+select Max(site_id) from site
+
+SELECT * FROM site WHERE site.campground_id = @campground AND site.site_id  NOT IN 
+
 select * from campground
-select * from reservation
+select * from park
+
+select name from park where park_id = 3
+Select name, campground_id from campground where park_id = 1
+select site_id from site where campground_id = 1
 select * from site
 
-select max(reservation_id) as reservation_ID from reservation
+select * from site
 
-select * from reservation
+select site_id from site where campground_id = 5
 
+INSERT INTO site(site_number, campground_id, accessible, utilities) VALUES(@site_number, 1, 1, 1); SELECT CAST (Scope_identity() as int)
 
-Select * from reservation join site On site.site_id = reservation.site_id
-join campground on campground.campground_id = site.campground_id
-where site.site_id = 1
-
--- arrive date is 20170901
--- depart date is 20170929
-
-DECLARE @arriveDate AS DateTime;
-SET @arriveDate = '20170901';
+select * from reservation;
+select * from reservation;
+(
 
 
-DECLARE @departureDate AS DateTime;
-SET @departureDate = '20170929';
+SELECT reservation.site_id FROM reservation WHERE ((2017-9-17 < reservation.from_date AND 2017-9-29 > reservation.from_date AND 2017-09-29 < reservation.to_date ) OR
+ (2017-9-17 > reservation.from_date AND 2017-09-29 < reservation.to_date) OR
+ (2017-9-17 > reservation.from_date AND 2017-09-29 > reservation.to_date) OR
+ (2017-9-17 < reservation.from_date AND 2017-09-29 > reservation.to_date))
 
-SELECT * 
-FROM site
-WHERE site.site_id  NOT IN (SELECT reservation.site_id FROM reservation 
-WHERE ( (reservation.from_date <= @arriveDate AND reservation.from_date >= @departureDate AND reservation.to_date <= @departureDate ) 
-                                                                            OR (reservation.from_date >= @arriveDate AND reservation.to_date <= @departureDate)
-                                                                            OR (reservation.from_date >= @arriveDate AND reservation.to_date >= @departureDate)
-                                                                            OR (reservation.from_date <= @arriveDate AND reservation.to_date >= @departureDate)
-                                                                            )
-                          );
-               ARRIVE: 2017-09-01  DEPART: 2017-09-29
-SELECT * 
-FROM site
-WHERE site.site_id  NOT IN (SELECT reservation.site_id FROM reservation 
-WHERE ( 
-   (2017-09-29 >= 2017-09-01 AND 2017-09-29 <= 2017-09-29 AND 2017-10-02 >= 2017-09-29 )  TRUE
-OR (2017-09-29 <= 2017-09-01 AND 2017-10-02 >= 2017-09-29)									FALSE
-OR (2017-09-29 <= 2017-09-01 AND 2017-10-02 <= 2017-09-29)									FALSE	
-OR (2017-09-29 >= 2017-09-01 AND 2017-10-02 <= 2017-09-29)									FALSE
-                                                                            )
-                          );
+);
 
 
-insert into reservation values (1, 'Josh Haci', '2017-10-1', '2017-10-5','2017-10-5')
-
-SELECT * FROM reservation
-JOIN site ON site.site_id = reservation.site_id
-JOIN campground ON campground.campground_id = site.campground_id
-JOIN park ON park.park_id = campground.park_id
-WHERE park.park_id = 1 AND campground.campground_id = 1;
-
-SELECT * FROM site
-JOIN reservation ON reservation.site_id = site.site_id
-JOIN campground ON campground.campground_id = site.campground_id
-JOIN park ON park.park_id = campground.park_id
-WHERE park.park_id = 1 AND campground.campground_id = 1 
-AND
 
 
-select * from campground
+select * from park
 
 
-select * from campground where park_id = 2
+select * from reservation where name = 'Joshua'
 
 
 CREATE TABLE park (
